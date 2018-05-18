@@ -13,6 +13,7 @@ public class Parser {
     private XMLInputFactory xmlif;
     private XMLStreamReader xmlsr;
     private FileReader xmlfr;
+    private Tv tv;
 
     /**
      * @brief Constructor of Parser class.
@@ -78,6 +79,7 @@ public class Parser {
         int eventType = xmlsr.getEventType();
 
         //todo cree un channel et stock son id
+        tv.getChannel_list().add(new Channel(xmlsr.getAttributeValue(0)));
 
         while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//channel") == Boolean.FALSE)){
             eventType = xmlsr.next();
@@ -110,9 +112,10 @@ public class Parser {
      * @brief Main loop of the Parser class.
      * @throws XMLStreamException
      */
-    public void run() throws XMLStreamException {
+    public void run(Tv n_tv) throws XMLStreamException {
         int eventType = 0;
         int loop = 0;
+        tv = n_tv;
 
         while(xmlsr.hasNext() && loop < 1000){
             eventType = xmlsr.next();

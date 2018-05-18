@@ -6,8 +6,9 @@ public class Main {
 
     public static  void main(String[] args){
         Parser p = new Parser("input/tvguide.xml");
+        Tv tv = new Tv();
         try {
-            p.run();
+            p.run(tv);
         } catch (XMLStreamException e) {
             e.printStackTrace();
         }
