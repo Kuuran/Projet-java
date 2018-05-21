@@ -1,4 +1,4 @@
-package project;
+package Tv_parse;
 
 import java.util.ArrayList;
 
@@ -21,4 +21,11 @@ public class Tv {
         return channel_list;
     }
 
+    public void addChannel(Channel channel){
+        channel_list.add(channel);
+    }
+
+    public void addProgram(Program program){
+        program_list.add(program);
+    }
 }
