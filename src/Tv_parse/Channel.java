@@ -2,22 +2,32 @@ package Tv_parse;
 
 import java.util.ArrayList;
 
+/**
+ * Channel class,
+ * stores a channel and its information.
+ */
 public class Channel {
 
     private String id;
     private String display_name;
     private ArrayList <Broadcast> broadcast_list;
 
+    /**
+     * Default constructor of Channel class.
+     */
     public Channel(){
         id = "";
         display_name = "";
         broadcast_list = new ArrayList<>();
     }
 
-    public Channel(String n_id){
-
+    /**
+     * Secondary constructor of Channel class.
+     * @param id ID of the channel.
+     */
+    public Channel(String id){
         this();
-        id = n_id;
+        this.id = id;
     }
 
 

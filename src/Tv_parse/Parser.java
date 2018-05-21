@@ -6,6 +6,10 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Parser class,
@@ -31,50 +35,74 @@ public class Parser {
     }
 
     /**
-     * Creates a new instance of program and broadcast classes and fill them with the information read from the XML file.
-     * @throws XMLStreamException Cannot read the next entry (hasNext()).
+     * Stores the credits inside the program.
+     * @param program The <b>Program</b> instance to fill with the information.
+     * @throws XMLStreamException Cannot read the next entry (hasNext(), next()) or cannot read the content (getElementText()).
      */
-    public void create_program() throws XMLStreamException {
+    public void create_credits(Program program) throws XMLStreamException {
+        int eventType = xmlsr.getEventType();
+        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//credits") == Boolean.FALSE)){
+            eventType = xmlsr.next();
+
+            if (eventType == XMLEvent.START_ELEMENT){
+                program.getCredits().put(xmlsr.getElementText(), xmlsr.getLocalName()); //Name as key and role as stored data because there might have several people with the same role.
+            }
+        }
+    }
+
+    /**
+     * Creates a new instance of <b>Program</b> and <b>Broadcast</b> classes and fill them with the information read from the XML file.
+     * @throws XMLStreamException Cannot read the next entry (hasNext()).
+     * @throws ParseException Date parsing is not working.
+     */
+    public void create_program() throws XMLStreamException, ParseException {
         int eventType = xmlsr.getEventType();
 
-        //todo cree un program et un broadcast + add start/stop/channelID a broadcast
+        //Cree un program et un broadcast + add start/stop/channelID a broadcast
+        Program program = new Program();
+        tv.addProgram(program);
+        DateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss yyyy");
+        Broadcast broadcast = new Broadcast(xmlsr.getAttributeValue(3), dateFormat.parse(xmlsr.getAttributeValue(0)), dateFormat.parse(xmlsr.getAttributeValue(1)), program);
 
         while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//programme") == Boolean.FALSE)){
             eventType = xmlsr.next();
 
-            if(eventType == XMLEvent.START_ELEMENT){
-                switch (xmlsr.getLocalName()){
-                    case "title":
-                        //todo
-                        break;
-                    case "sub-title" :
-                        //todo
-                        break;
-                    case "desc":
-                        //todo
-                        break;
-                    case "credits":
-                        //todo (handle les credits)
-                        break;
-                    case "date":
-                        //todo
-                        break;
+            if(eventType == XMLEvent.START_ELEMENT) switch (xmlsr.getLocalName()) {
+                case "title":
+                    //todo gerer le cas de titres multiples (avec argument de langue? pas oblgatoire)
+                    program.setTitle(xmlsr.getElementText());
+                    break;
+                case "sub-title":
+                    //todo idem title
+                    program.setSub_title(xmlsr.getElementText());
+                    break;
+                case "desc":
+                    //todo idem title?
+                    program.setDescripion(xmlsr.getElementText());
+                    break;
+                case "credits":
+                    create_credits(program);
+                    break;
+                case "date":
+                    Date date = new Date();
+                    date.setYear(Integer.parseInt(xmlsr.getElementText()));
+                    program.setDate(date);
+                    break;
 
-                }
             }
 
         }
     }
 
     /**
-     * Creates a new instance of channel class and fill it with the information read from the XML file.
+     * Creates a new instance of <b>Channel</b> class and fill it with the information read from the XML file.
      * @throws XMLStreamException Cannot read the next entry (hasNext() or getElementText()).
      */
     public void create_channel() throws XMLStreamException {
         int eventType = xmlsr.getEventType();
         //Creates a new Channel and stores its ID
         Channel channel = new Channel(xmlsr.getAttributeValue(0));
-        tv.getChannel_list().add(channel);
+        tv.addChannel(channel);
 
         while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//channel") == Boolean.FALSE)){
             eventType = xmlsr.next();
@@ -90,12 +118,12 @@ public class Parser {
         }
     }
 
-
     /**
      * Handles the XML event START_ELEMENT.
      * @throws XMLStreamException In case {@link #create_channel()} or {@link #create_program()} throws an exception.
+     * @throws ParseException In case {@link #create_program()} throws an exception.
      */
-    public void start_element() throws XMLStreamException {
+    public void start_element() throws XMLStreamException, ParseException {
         switch(xmlsr.getLocalName()){
             case "channel":
                 create_channel();
@@ -110,10 +138,11 @@ public class Parser {
 
     /**
      * Main loop of the Parser class.
-     * @param tv New Tv instance to fill with the parser.
+     * @param tv New <b>Tv</b> instance to fill with the parser.
      * @throws XMLStreamException Cannot read the next entry (hasNext()) or in case {@link #start_element()} throws an exception.
+     * @throws ParseException In case {@link #start_element()} throws an exception.
      */
-    public void run(Tv tv) throws XMLStreamException {
+    public void run(Tv tv) throws XMLStreamException, ParseException {
         int eventType;
         int loop = 0;
         this.tv = tv;

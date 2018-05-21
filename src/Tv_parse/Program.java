@@ -1,22 +1,29 @@
 package Tv_parse;
 
 import java.util.Date;
+import java.util.HashMap;
 
+/**
+ * Program class,
+ * stores a program and its informations.
+ */
 public class Program {
 
     private String title;
     private String sub_title;
     private String descripion;
-    private String[] credits;
+    private HashMap<String, String> credits;
     private Date date;
 
+    /**
+     * Default constructor of <b>Program</b> class.
+     */
+    public Program() {
+        this.title = "";
+        this.sub_title = "";
+        this.descripion = "";
+        this.credits = new HashMap<>();
 
-    public Program(String title, String sub_title, String descripion, String[] credits, Date date) {
-        this.title = title;
-        this.sub_title = sub_title;
-        this.descripion = descripion;
-        this.credits = credits;
-        this.date = date;
     }
 
     public String getTitle() {
@@ -43,11 +50,11 @@ public class Program {
         this.descripion = descripion;
     }
 
-    public String[] getCredits() {
+    public HashMap<String, String> getCredits() {
         return credits;
     }
 
-    public void setCredits(String[] credits) {
+    public void setCredits(HashMap<String, String> credits) {
         this.credits = credits;
     }
 
