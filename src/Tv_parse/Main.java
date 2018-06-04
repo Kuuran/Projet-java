@@ -20,6 +20,11 @@ public class Main {
         Parser parser = new Parser("input/tvguide.xml");
         Tv tv = new Tv();
         parser.run(tv);
+
+
+
+
+
     }
 
 }

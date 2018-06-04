@@ -88,7 +88,44 @@ public class Parser {
                     date.setYear(Integer.parseInt(xmlsr.getElementText()));
                     program.setDate(date);
                     break;
+                case "category":
+                    program.setCategory(xmlsr.getElementText());
+                    break;
+                case "subtitles":
+                    while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//subtitles") == Boolean.FALSE)){
+                        eventType = xmlsr.next();
 
+                        if(eventType == XMLEvent.START_ELEMENT){
+                            if (xmlsr.getLocalName() == "language"){
+                                program.setSubtitles_language(xmlsr.getElementText());
+                            }
+                        }
+                    }
+                    break;
+                case "length":
+                    program.setLength(Integer.parseInt(xmlsr.getElementText()));
+                    program.setTime_unit(xmlsr.getAttributeValue(0));
+                    break;
+                case "country":
+                    program.setCountry(xmlsr.getElementText());
+                    break;
+                case "episode-num":
+                    program.setEpisode_num(xmlsr.getElementText());
+                    break;
+                case "video":
+                    while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//video") == Boolean.FALSE)){
+                        eventType = xmlsr.next();
+
+                        if(eventType == XMLEvent.START_ELEMENT){
+                            if (xmlsr.getLocalName() == "aspect"){
+                                program.setVideo_format(xmlsr.getElementText());
+                            }
+                            if (xmlsr.getLocalName() == "quality"){
+                                program.setVideo_quality(xmlsr.getElementText());
+                            }
+                        }
+                    }
+                    break;
             }
 
         }
