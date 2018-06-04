@@ -58,7 +58,6 @@ public class Parser {
      */
     public void create_program() throws XMLStreamException, ParseException {
         int eventType = xmlsr.getEventType();
-        //Cree un program et un broadcast + add start/stop/channelID a broadcast
         Program program = new Program();
         DateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss");
         Broadcast broadcast = new Broadcast(xmlsr.getAttributeValue(3), dateFormat.parse(xmlsr.getAttributeValue(0)), dateFormat.parse(xmlsr.getAttributeValue(1)), program);
@@ -89,7 +88,7 @@ public class Parser {
                         program.setCategory(xmlsr.getElementText());
                         break;
                     case "subtitles":
-                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/subtitles") == Boolean.FALSE)){
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("subtitles") == Boolean.FALSE)){
                             eventType = xmlsr.next();
 
                             if(eventType == XMLEvent.START_ELEMENT){
@@ -110,7 +109,7 @@ public class Parser {
                         program.setEpisode_num(xmlsr.getElementText());
                         break;
                     case "video":
-                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/video") == Boolean.FALSE)){
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("video") == Boolean.FALSE)){
                             eventType = xmlsr.next();
 
                             if(eventType == XMLEvent.START_ELEMENT){
@@ -124,7 +123,7 @@ public class Parser {
                         }
                         break;
                     case "audio":
-                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/audio") == Boolean.FALSE)){
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("audio") == Boolean.FALSE)){
                             eventType = xmlsr.next();
 
                             if(eventType == XMLEvent.START_ELEMENT){
@@ -136,12 +135,12 @@ public class Parser {
                         break;
                     case "prevoiusly-shown":
                         previously_shown = Boolean.TRUE;
-                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/programme") == Boolean.FALSE)) { //skip to the end of the program definition, there is no need to create it since it already exists
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("programme") == Boolean.FALSE)) { //skip to the end of the program definition, there is no need to create it since it already exists
                             eventType = xmlsr.next();
                         }
                         break;
                     case "rating":
-                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/rating") == Boolean.FALSE)){
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("rating") == Boolean.FALSE)){
                             eventType = xmlsr.next();
 
                             if(eventType == XMLEvent.START_ELEMENT){
@@ -152,8 +151,16 @@ public class Parser {
                         }
                         break;
                     case "star-rating":
-                        program.setStar_rating(xmlsr.getElementText());
-                        break;
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("star-rating") == Boolean.FALSE)){
+                            eventType = xmlsr.next();
+
+                            if(eventType == XMLEvent.START_ELEMENT){
+                                if (Objects.equals(xmlsr.getLocalName(), "value")){
+                                    program.setStar_rating(xmlsr.getElementText());
+                                }
+                            }
+                        }
+                    break;
                     default:
                         break;
                 }
@@ -161,6 +168,7 @@ public class Parser {
         }
         if(!previously_shown) tv.addProgram(program);
         tv.addBroadcast(broadcast);
+        tv.getChannel_list().get(broadcast.getChannel_id()).getBroadcast_list().add(broadcast);
     }
 
     /**

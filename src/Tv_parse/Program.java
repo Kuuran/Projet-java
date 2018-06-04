@@ -64,7 +64,7 @@ public class Program {
             string = string + "\nDescription : " + descripion;
         }
         if(length != null){
-            string = string + "\nDuree : " + length+time_unit;
+            string = string + "\nDuree : " + length + " " + time_unit;
         }
         if(date != null){
             string = string + "\nDate de sortie : " + date;
