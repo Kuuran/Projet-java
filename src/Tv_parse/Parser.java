@@ -83,9 +83,7 @@ public class Parser {
                         create_credits(program);
                         break;
                     case "date":
-                        Date date = new Date();
-                        date.setYear(Integer.parseInt(xmlsr.getElementText()));
-                        program.setDate(date);
+                        program.setDate(xmlsr.getElementText());
                         break;
                     case "category":
                         program.setCategory(xmlsr.getElementText());
@@ -103,7 +101,7 @@ public class Parser {
                         break;
                     case "length":
                         program.setTime_unit(xmlsr.getAttributeValue(0));
-                        program.setLength(Integer.parseInt(xmlsr.getElementText()));
+                        program.setLength(xmlsr.getElementText());
                         break;
                     case "country":
                         program.setCountry(xmlsr.getElementText());

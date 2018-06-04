@@ -13,10 +13,10 @@ public class Program {
     private String sub_title;
     private String descripion;
     private HashMap<String, String> credits;
-    private Date date;
+    private String date;
     private String category;
     private String subtitles_language;
-    private double length;
+    private String length;
     private String time_unit;
     private String country;
     private String episode_num;
@@ -31,8 +31,6 @@ public class Program {
      */
     public Program() {
         this.title = "";
-        this.sub_title = "";
-        this.descripion = "";
         this.credits = new HashMap<>();
 
     }
@@ -44,6 +42,56 @@ public class Program {
         else {
             return title + " " + star_rating;
         }
+    }
+
+    public String toString_long(){
+        String string = "";
+        string = string + title;
+
+        if(episode_num != null){
+            string = string + " " + episode_num;
+        }
+        if(sub_title != null){
+            string = string + "\n" + sub_title;
+        }
+        if(category != null){
+            string = string + "\nCategorie : " + category;
+        }
+        if(star_rating != null){
+            string = string + "\nNote : " + star_rating;
+        }
+        if(descripion != null){
+            string = string + "\nDescription : " + descripion;
+        }
+        if(length != null){
+            string = string + "\nDuree : " + length+time_unit;
+        }
+        if(date != null){
+            string = string + "\nDate de sortie : " + date;
+        }
+        if(country != null){
+            string = string + "\nPays d'origine : " + country;
+        }
+        if(subtitles_language != null){
+            string = string + "\nSous titres disponibles : " + subtitles_language;
+        }
+        if(rating != null){
+            string = string + "/n" + rating;
+        }
+        string = string + "\nCredits :";
+        for (String key : credits.keySet()) {
+            string = string + "\n   " + credits.get(key) + " : " + key;
+        }
+        if(video_format != null && video_quality != null){
+            string = string + "\nVideo : " + video_quality + " " + video_format;
+        }
+        else if (video_quality != null){
+            string = string + "\nVideo : " + video_quality;
+        }
+        if(audio_format != null){
+            string = string + "\nAudio : " + audio_format;
+        }
+        return string;
     }
 
 
@@ -83,11 +131,11 @@ public class Program {
         this.credits = credits;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -107,11 +155,11 @@ public class Program {
         this.subtitles_language = subtitles_language;
     }
 
-    public double getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(double length) {
+    public void setLength(String length) {
         this.length = length;
     }
 

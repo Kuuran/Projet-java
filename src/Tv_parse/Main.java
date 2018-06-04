@@ -23,7 +23,7 @@ public class Main {
         parser.run(tv);
 
         for(Program program : tv.getProgram_list()){
-            System.out.println(program.toString_short());
+            System.out.println(program.toString_long());
         }
     }
 }
