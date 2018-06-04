@@ -3,6 +3,7 @@ package Tv_parse;
 import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 /**
  * Main class
@@ -21,10 +22,8 @@ public class Main {
         Tv tv = new Tv();
         parser.run(tv);
 
-
-
-
-
+        for(Program program : tv.getProgram_list()){
+            System.out.println(program.toString_short());
+        }
     }
-
 }

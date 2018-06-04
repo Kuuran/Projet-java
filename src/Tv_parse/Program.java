@@ -22,6 +22,9 @@ public class Program {
     private String episode_num;
     private String video_format;
     private String video_quality;
+    private String audio_format;
+    private String rating;
+    private String star_rating;
 
     /**
      * Default constructor of <b>Program</b> class.
@@ -33,6 +36,20 @@ public class Program {
         this.credits = new HashMap<>();
 
     }
+
+    public String toString_short(){
+        if(star_rating == null){
+            return title;
+        }
+        else {
+            return title + " " + star_rating;
+        }
+    }
+
+
+
+
+
 
     public String getTitle() {
         return title;
@@ -136,5 +153,29 @@ public class Program {
 
     public void setVideo_quality(String video_quality) {
         this.video_quality = video_quality;
+    }
+
+    public String getAudio_format() {
+        return audio_format;
+    }
+
+    public void setAudio_format(String audio_format) {
+        this.audio_format = audio_format;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getStar_rating() {
+        return star_rating;
+    }
+
+    public void setStar_rating(String star_rating) {
+        this.star_rating = star_rating;
     }
 }

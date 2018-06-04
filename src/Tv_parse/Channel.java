@@ -30,6 +30,11 @@ public class Channel {
         this.id = id;
     }
 
+    @Override
+    public String toString(){
+        return display_name;
+    }
+
 
     public void setId(String id) {
         this.id = id;

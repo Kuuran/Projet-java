@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Parser class,
@@ -41,7 +42,7 @@ public class Parser {
      */
     public void create_credits(Program program) throws XMLStreamException {
         int eventType = xmlsr.getEventType();
-        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//credits") == Boolean.FALSE)){
+        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("credits") == Boolean.FALSE)){
             eventType = xmlsr.next();
 
             if (eventType == XMLEvent.START_ELEMENT){
@@ -57,78 +58,111 @@ public class Parser {
      */
     public void create_program() throws XMLStreamException, ParseException {
         int eventType = xmlsr.getEventType();
-
         //Cree un program et un broadcast + add start/stop/channelID a broadcast
         Program program = new Program();
-        tv.addProgram(program);
-        DateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss");
         Broadcast broadcast = new Broadcast(xmlsr.getAttributeValue(3), dateFormat.parse(xmlsr.getAttributeValue(0)), dateFormat.parse(xmlsr.getAttributeValue(1)), program);
 
-        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//programme") == Boolean.FALSE)){
+        Boolean previously_shown = Boolean.FALSE;
+
+        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("programme") == Boolean.FALSE)){
             eventType = xmlsr.next();
 
-            if(eventType == XMLEvent.START_ELEMENT) switch (xmlsr.getLocalName()) {
-                case "title":
-                    //todo gerer le cas de titres multiples (avec argument de langue? pas oblgatoire)
-                    program.setTitle(xmlsr.getElementText());
-                    break;
-                case "sub-title":
-                    //todo idem title
-                    program.setSub_title(xmlsr.getElementText());
-                    break;
-                case "desc":
-                    //todo idem title?
-                    program.setDescripion(xmlsr.getElementText());
-                    break;
-                case "credits":
-                    create_credits(program);
-                    break;
-                case "date":
-                    Date date = new Date();
-                    date.setYear(Integer.parseInt(xmlsr.getElementText()));
-                    program.setDate(date);
-                    break;
-                case "category":
-                    program.setCategory(xmlsr.getElementText());
-                    break;
-                case "subtitles":
-                    while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//subtitles") == Boolean.FALSE)){
-                        eventType = xmlsr.next();
+            if(eventType == XMLEvent.START_ELEMENT) {
+                switch (xmlsr.getLocalName()) {
+                    case "title":
+                        program.setTitle(xmlsr.getElementText());
+                        break;
+                    case "sub-title":
+                        program.setSub_title(xmlsr.getElementText());
+                        break;
+                    case "desc":
+                        program.setDescripion(xmlsr.getElementText());
+                        break;
+                    case "credits":
+                        create_credits(program);
+                        break;
+                    case "date":
+                        Date date = new Date();
+                        date.setYear(Integer.parseInt(xmlsr.getElementText()));
+                        program.setDate(date);
+                        break;
+                    case "category":
+                        program.setCategory(xmlsr.getElementText());
+                        break;
+                    case "subtitles":
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/subtitles") == Boolean.FALSE)){
+                            eventType = xmlsr.next();
 
-                        if(eventType == XMLEvent.START_ELEMENT){
-                            if (xmlsr.getLocalName() == "language"){
-                                program.setSubtitles_language(xmlsr.getElementText());
+                            if(eventType == XMLEvent.START_ELEMENT){
+                                if (Objects.equals(xmlsr.getLocalName(), "language")){
+                                    program.setSubtitles_language(xmlsr.getElementText());
+                                }
                             }
                         }
-                    }
-                    break;
-                case "length":
-                    program.setLength(Integer.parseInt(xmlsr.getElementText()));
-                    program.setTime_unit(xmlsr.getAttributeValue(0));
-                    break;
-                case "country":
-                    program.setCountry(xmlsr.getElementText());
-                    break;
-                case "episode-num":
-                    program.setEpisode_num(xmlsr.getElementText());
-                    break;
-                case "video":
-                    while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//video") == Boolean.FALSE)){
-                        eventType = xmlsr.next();
+                        break;
+                    case "length":
+                        program.setTime_unit(xmlsr.getAttributeValue(0));
+                        program.setLength(Integer.parseInt(xmlsr.getElementText()));
+                        break;
+                    case "country":
+                        program.setCountry(xmlsr.getElementText());
+                        break;
+                    case "episode-num":
+                        program.setEpisode_num(xmlsr.getElementText());
+                        break;
+                    case "video":
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/video") == Boolean.FALSE)){
+                            eventType = xmlsr.next();
 
-                        if(eventType == XMLEvent.START_ELEMENT){
-                            if (xmlsr.getLocalName() == "aspect"){
-                                program.setVideo_format(xmlsr.getElementText());
-                            }
-                            if (xmlsr.getLocalName() == "quality"){
-                                program.setVideo_quality(xmlsr.getElementText());
+                            if(eventType == XMLEvent.START_ELEMENT){
+                                if (Objects.equals(xmlsr.getLocalName(), "aspect")){
+                                    program.setVideo_format(xmlsr.getElementText());
+                                }
+                                if (Objects.equals(xmlsr.getLocalName(), "quality")){
+                                    program.setVideo_quality(xmlsr.getElementText());
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
+                    case "audio":
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/audio") == Boolean.FALSE)){
+                            eventType = xmlsr.next();
+
+                            if(eventType == XMLEvent.START_ELEMENT){
+                                if (Objects.equals(xmlsr.getLocalName(), "stereo")){
+                                    program.setAudio_format(xmlsr.getElementText());
+                                }
+                            }
+                        }
+                        break;
+                    case "prevoiusly-shown":
+                        previously_shown = Boolean.TRUE;
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/programme") == Boolean.FALSE)) { //skip to the end of the program definition, there is no need to create it since it already exists
+                            eventType = xmlsr.next();
+                        }
+                        break;
+                    case "rating":
+                        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("/rating") == Boolean.FALSE)){
+                            eventType = xmlsr.next();
+
+                            if(eventType == XMLEvent.START_ELEMENT){
+                                if (Objects.equals(xmlsr.getLocalName(), "value")){
+                                    program.setRating(xmlsr.getElementText());
+                                }
+                            }
+                        }
+                        break;
+                    case "star-rating":
+                        program.setStar_rating(xmlsr.getElementText());
+                        break;
+                    default:
+                        break;
+                }
             }
-
         }
+        if(!previously_shown) tv.addProgram(program);
+        tv.addBroadcast(broadcast);
     }
 
     /**
@@ -141,7 +175,7 @@ public class Parser {
         Channel channel = new Channel(xmlsr.getAttributeValue(0));
         tv.addChannel(channel);
 
-        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("//channel") == Boolean.FALSE)){
+        while (xmlsr.hasNext() && (eventType != XMLEvent.END_ELEMENT || xmlsr.getLocalName().equals("channel") == Boolean.FALSE)){
             eventType = xmlsr.next();
 
             //Sets the display_name of the Channel
@@ -161,15 +195,11 @@ public class Parser {
      * @throws ParseException In case {@link #create_program()} throws an exception.
      */
     public void start_element() throws XMLStreamException, ParseException {
-        switch(xmlsr.getLocalName()){
-            case "channel":
-                create_channel();
-                break;
-            case "programme":
-                create_program();
-                break;
-            default:
-                break;
+        if(xmlsr.getLocalName().equals("channel")) {
+            create_channel();
+        }
+        else if(xmlsr.getLocalName().equals("programme")) {
+            create_program();
         }
     }
 
@@ -181,16 +211,12 @@ public class Parser {
      */
     public void run(Tv tv) throws XMLStreamException, ParseException {
         int eventType;
-        int loop = 0;
         this.tv = tv;
-        //todo remove loop var (used for debug)
-        while(xmlsr.hasNext() && loop < 1000){
+        while(xmlsr.hasNext()){
             eventType = xmlsr.next();
-            loop++;
             if (eventType == XMLEvent.START_ELEMENT){
                 start_element();
             }
         }
     }
-
 }
