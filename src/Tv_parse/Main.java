@@ -4,6 +4,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Main class
@@ -22,8 +23,20 @@ public class Main {
         Tv tv = new Tv();
         parser.run(tv);
 
-        for(Program program : tv.getProgram_list()){
-            System.out.println(program.toString_long());
-        }
+        tv.print_channel_list();
+
+        tv.print_program_list();
+
+        tv.print_program("Cosmos : une odyssée à travers l'univers");
+
+        tv.print_channel_programmation("W9");
+
+        tv.print_days_with_broadcast();
+
+        Date date = new Date(2018, 5, 20, 6, 0);
+        tv.print_broadcasts_at_hour(date);
+
+
+
     }
 }

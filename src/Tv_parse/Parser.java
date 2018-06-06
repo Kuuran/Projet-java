@@ -60,7 +60,7 @@ public class Parser {
         int eventType = xmlsr.getEventType();
         Program program = new Program();
         DateFormat dateFormat = new SimpleDateFormat("YYYYMMDDhhmmss");
-        Broadcast broadcast = new Broadcast(xmlsr.getAttributeValue(3), dateFormat.parse(xmlsr.getAttributeValue(0)), dateFormat.parse(xmlsr.getAttributeValue(1)), program);
+        Broadcast broadcast = new Broadcast((tv.getChannel_list().get(xmlsr.getAttributeValue(3)).getDisplay_name()), dateFormat.parse(xmlsr.getAttributeValue(0)), dateFormat.parse(xmlsr.getAttributeValue(1)), program);
 
         Boolean previously_shown = Boolean.FALSE;
 
@@ -168,7 +168,17 @@ public class Parser {
         }
         if(!previously_shown) tv.addProgram(program);
         tv.addBroadcast(broadcast);
-        tv.getChannel_list().get(broadcast.getChannel_id()).getBroadcast_list().add(broadcast);
+
+        System.out.println(broadcast.getChannel_id());
+
+        //tv.getChannel_list().get(broadcast.getChannel_id()).addBroadcast(broadcast);
+
+        /*
+        if(tv.getChannel_list().containsKey(broadcast.getChannel_id())){
+            tv.getChannel_list().get(broadcast.getChannel_id()).addBroadcast(broadcast);
+            tv.getChannel_list().
+        }*/
+
     }
 
     /**

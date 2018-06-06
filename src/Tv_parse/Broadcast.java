@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class Broadcast {
 
-    private String channel_id;
+    private String channel_name;
     private Date start;
     private Date stop;
     private Program program;
@@ -20,11 +20,22 @@ public class Broadcast {
      * @param stop <i>Date</i> and hour when the <b>Broadcast</b> ends.
      * @param program <b>Program</b> that will be broadcasted.
      */
-    public Broadcast(String channel_id, Date start, Date stop, Program program) {
-        this.channel_id = channel_id;
+    public Broadcast(String channel_name, Date start, Date stop, Program program) {
+        this.channel_name = channel_name;
         this.start = start;
         this.stop = stop;
         this.program = program;
+    }
+
+    /**
+     * Used to print a Broadcast and its information.
+     * @return String to print.
+     */
+    @Override
+    public String toString(){
+        String string = "";
+        string = program.toString_short() + "\nChaine : " + channel_name + "\nHorraires : " + start.getTime() + "  " + stop.getTime();
+        return string;
     }
 
     public Date getStop() {
@@ -36,11 +47,11 @@ public class Broadcast {
     }
 
     public String getChannel_id() {
-        return channel_id;
+        return channel_name;
     }
 
-    public void setChannel_id(String channel_id) {
-        this.channel_id = channel_id;
+    public void setChannel_id(String channel_name) {
+        this.channel_name = channel_name;
     }
 
     public Date getStart() {

@@ -35,15 +35,18 @@ public class Program {
 
     }
 
+    /**
+     * Used to print a program.
+     * @return String to print.
+     */
     public String toString_short(){
-        if(star_rating == null){
-            return title;
-        }
-        else {
-            return title + " " + star_rating;
-        }
+        return title;
     }
 
+    /**
+     * Used to print a program with all its components.
+     * @return String to print.
+     */
     public String toString_long(){
         String string = "";
         string = string + title;
@@ -93,10 +96,6 @@ public class Program {
         }
         return string;
     }
-
-
-
-
 
 
     public String getTitle() {

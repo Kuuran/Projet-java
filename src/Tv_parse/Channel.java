@@ -30,6 +30,10 @@ public class Channel {
         this.id = id;
     }
 
+    /**
+     * Used to print a channel.
+     * @return String to print.
+     */
     @Override
     public String toString(){
         return display_name;
@@ -63,4 +67,5 @@ public class Channel {
     public void addDisplay_name(String display_name){
         this.display_name = this.display_name + " // " + display_name;
     }
+
 }
