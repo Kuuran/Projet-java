@@ -29,7 +29,7 @@ public class Main {
 
         tv.print_program("Cosmos : une odyssée à travers l'univers");
 
-        tv.print_channel_programmation("W9");
+        tv.print_channel_programmation("C119.api.telerama.fr");
 
         tv.print_days_with_broadcast();
 

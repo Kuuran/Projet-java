@@ -8,6 +8,7 @@ import java.util.Date;
  */
 public class Broadcast {
 
+    private String channel_id;
     private String channel_name;
     private Date start;
     private Date stop;
@@ -15,16 +16,17 @@ public class Broadcast {
 
     /**
      * Default constructor of Broadcast class.
-     * @param channel_id ID of the <b>Channel</b> where the program will be broadcasted.
+     * @param channel_name ID of the <b>Channel</b> where the program will be broadcasted.
      * @param start <i>Date</i> and hour when the <b>Broadcast</b> starts.
      * @param stop <i>Date</i> and hour when the <b>Broadcast</b> ends.
      * @param program <b>Program</b> that will be broadcasted.
      */
-    public Broadcast(String channel_name, Date start, Date stop, Program program) {
+    public Broadcast(String channel_id, String channel_name, Date start, Date stop, Program program) {
         this.channel_name = channel_name;
         this.start = start;
         this.stop = stop;
         this.program = program;
+        this.channel_id = channel_id;
     }
 
     /**
@@ -34,7 +36,7 @@ public class Broadcast {
     @Override
     public String toString(){
         String string = "";
-        string = program.toString_short() + "\nChaine : " + channel_name + "\nHorraires : " + start.getTime() + "  " + stop.getTime();
+        string = program.toString_short() + "\nChaine : " + channel_name + "\nHorraires : " + start.toString() + "  " + stop.toString();
         return string;
     }
 
@@ -46,11 +48,11 @@ public class Broadcast {
         this.stop = stop;
     }
 
-    public String getChannel_id() {
+    public String getChannel_name() {
         return channel_name;
     }
 
-    public void setChannel_id(String channel_name) {
+    public void setChannel_name(String channel_name) {
         this.channel_name = channel_name;
     }
 
@@ -68,5 +70,13 @@ public class Broadcast {
 
     public void setProgram(Program program) {
         this.program = program;
+    }
+
+    public String getChannel_id() {
+        return channel_id;
+    }
+
+    public void setChannel_id(String channel_id) {
+        this.channel_id = channel_id;
     }
 }

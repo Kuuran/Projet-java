@@ -64,8 +64,8 @@ public class Tv {
         System.out.println(program_list.get(name).toString_long());
     }
 
-    public void print_channel_programmation(String name){
-        for (Broadcast broadcast : channel_list.get(name).getBroadcast_list()) {
+    public void print_channel_programmation(String channel_id){
+        for (Broadcast broadcast : channel_list.get(channel_id).getBroadcast_list()) {
             System.out.println(broadcast.toString());
         }
     }
