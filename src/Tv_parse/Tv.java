@@ -96,5 +96,23 @@ public class Tv {
         }
     }
 
+    public void print_broadcast(Broadcast broadcast){
+        System.out.println(broadcast.toString());
+    }
+
+    public void print_films_from_actor(String name){
+        ArrayList<String> result = new ArrayList<>();
+
+        System.out.println("Liste des films associés à " + name + " :\n");
+
+        for (Program program : program_list.values()) {
+            for(String n : program.getCredits().keySet()){
+                if (n.equals(name)) result.add(program.toString_short());
+            }
+        }
+        for (String string : result){
+            System.out.println(string);
+        }
+    }
 
 }

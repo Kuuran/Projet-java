@@ -36,6 +36,7 @@ public class Main {
         Date date = new Date(2018, 5, 20, 6, 0);
         tv.print_broadcasts_at_hour(date);
 
+        tv.print_films_from_actor("Mauricio Dias");
 
 
     }
