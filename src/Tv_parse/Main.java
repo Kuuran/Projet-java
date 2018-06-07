@@ -4,7 +4,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -21,9 +20,6 @@ public class Main {
      * @throws ParseException In case {@link Parser#run(Tv)} throws an exception.
      */
     public static  void main(String[] args) throws XMLStreamException, ParseException, InterruptedException, IOException {
-
-
-
 
         Parser parser = new Parser("input/tvguide.xml");
         Tv tv = new Tv();
@@ -102,8 +98,6 @@ public class Main {
 
         System.out.println("\nAppuyez sur une touche pour continuer. (fin)");
         System.in.read();
-
-
     }
 
 }

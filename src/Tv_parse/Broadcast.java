@@ -35,9 +35,7 @@ public class Broadcast {
      */
     @Override
     public String toString(){
-        String string = "";
-        string = program.toString_short() + "\nChaine : " + channel_name + "\nHorraires : " + start.toString() + "  " + stop.toString();
-        return string;
+        return program.toString_short() + "\nChaine : " + channel_name + "\nHorraires : " + start.toString() + "  " + stop.toString();
     }
 
     public Date getStop() {
