@@ -4,6 +4,10 @@
  */
 package Tv_parse;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,33 +52,52 @@ public class Tv {
     }
 
 
+    /**
+     * Prints a list of all channels.
+     */
     public void print_channel_list(){
         for(Channel channel : channel_list.values()){
             System.out.println(channel.toString());
         }
     }
 
+    /**
+     * Prints a list of all programs.
+     */
     public void print_program_list(){
         for(Program program : program_list.values()){
             System.out.println(program.toString_short());
         }
     }
 
+    /**
+     * Prints the information of a program.
+     * @param name name of the program to print. Sensitive at the case.
+     */
     public  void print_program(String name){
         System.out.println(program_list.get(name).toString_long());
     }
 
+    /**
+     * Prints the list of broadcasts of a channel.
+     * @param channel_id ID of the channel.
+     */
     public void print_channel_programmation(String channel_id){
         for (Broadcast broadcast : channel_list.get(channel_id).getBroadcast_list()) {
-            System.out.println(broadcast.toString());
+            System.out.println(broadcast.toString() + "\n");
         }
     }
 
+    /**
+     * Prints all days with programmed broadcasts.
+     */
     public void print_days_with_broadcast(){
         HashMap<String,String> day_list = new HashMap<>();
         String string;
+        DateFormat df = new SimpleDateFormat("dd / MM / yyyy");
+
         for(Broadcast broadcast : broadcast_list){
-               string = String.valueOf(broadcast.getStart().getDay()) + " / " + String.valueOf(broadcast.getStart().getMonth()) + " / " + String.valueOf(broadcast.getStart().getYear());
+               string = df.format(broadcast.getStart());
                day_list.put(string, "");
         }
         for(String str : day_list.keySet()){
@@ -82,6 +105,10 @@ public class Tv {
         }
     }
 
+    /**
+     * Prints broadcasts of the specified day.
+     * @param date Day wanted.
+     */
     public void print_broadcasts_at_date(Date date){
         for (Broadcast broadcast : broadcast_list){
             if(broadcast.getStart().getDay() == date.getDay() && broadcast.getStart().getMonth() == date.getMonth() && broadcast.getStart().getYear() == date.getYear()){
@@ -89,6 +116,10 @@ public class Tv {
         }
     }
 
+    /**
+     * Prints broadcasts of the specified day and hour.
+     * @param date Day and hour wanted.
+     */
     public void print_broadcasts_at_hour(Date date){
         for (Broadcast broadcast : broadcast_list){
             if(broadcast.getStart().getDay() == date.getDay() && broadcast.getStart().getMonth() == date.getMonth() && broadcast.getStart().getYear() == date.getYear() && broadcast.getStart().getHours() == date.getHours()){
@@ -96,10 +127,18 @@ public class Tv {
         }
     }
 
+    /**
+     * Prints the information of a broadcast.
+     * @param broadcast Broadcast to print.
+     */
     public void print_broadcast(Broadcast broadcast){
         System.out.println(broadcast.toString());
     }
 
+    /**
+     * Prints all films in which the specified person participated (not only actors).
+     * @param name Person wanted.
+     */
     public void print_films_from_actor(String name){
         ArrayList<String> result = new ArrayList<>();
 
@@ -115,6 +154,9 @@ public class Tv {
         }
     }
 
+    /**
+     * Prints the number of Broadcasts for each CSA rating for each channel.
+     */
     public void print_CSA_per_channel(){
         String string = "";
         HashMap<String, Integer> count = new HashMap<>();
@@ -135,13 +177,20 @@ public class Tv {
         System.out.println(string);
     }
 
+    /**
+     * Prints all actors and their number of appearance in films (Not sorted).
+     */
     public void print_actors(){
         HashMap<String, Integer> count = new HashMap<>();
         String sub = "";
         for(Program program : program_list.values()){
             for(String key : program.getCredits().keySet()){
                 if(program.getCredits().get(key).equals("actor")){
-                    sub = key.substring(key.indexOf('('));
+                    if(key.contains("(")) {
+                        sub = key.substring(0, key.indexOf("("));
+                    } else{
+                        sub = key;
+                    }
                     if (count.containsKey(sub)){
                         count.put(sub, count.get(sub) + 1);
                     }
@@ -151,7 +200,11 @@ public class Tv {
                 }
             }
         }
-    //todo sort et afficher
+        String res = "";
+        for (String string : count.keySet()){
+            res = res + string + ": " + count.get(string) + "\n";
+        }
+        System.out.println(res);
     }
 
 }
