@@ -115,4 +115,43 @@ public class Tv {
         }
     }
 
+    public void print_CSA_per_channel(){
+        String string = "";
+        HashMap<String, Integer> count = new HashMap<>();
+        for (Channel channel : channel_list.values()) {
+            string = string + "\n" + channel.toString() + " : \n";
+            for (Broadcast broadcast: channel.getBroadcast_list()) {
+                if(count.containsKey(broadcast.getProgram().getRating())){
+                    count.put(broadcast.getProgram().getRating(), count.get(broadcast.getProgram().getRating()) + 1);
+                }else {
+                    count.put(broadcast.getProgram().getRating(), 1);
+                }
+            }
+            for (String str : count.keySet()) {
+                string = string + str + " : " + count.get(str) + "\n";
+            }
+            count.clear();
+        }
+        System.out.println(string);
+    }
+
+    public void print_actors(){
+        HashMap<String, Integer> count = new HashMap<>();
+        String sub = "";
+        for(Program program : program_list.values()){
+            for(String key : program.getCredits().keySet()){
+                if(program.getCredits().get(key).equals("actor")){
+                    sub = key.substring(key.indexOf('('));
+                    if (count.containsKey(sub)){
+                        count.put(sub, count.get(sub) + 1);
+                    }
+                    else{
+                        count.put(sub, 1);
+                    }
+                }
+            }
+        }
+    //todo sort et afficher
+    }
+
 }

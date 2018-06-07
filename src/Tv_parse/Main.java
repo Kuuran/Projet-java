@@ -38,6 +38,8 @@ public class Main {
 
         tv.print_films_from_actor("Mauricio Dias");
 
+        tv.print_CSA_per_channel();
+
 
     }
 }
